@@ -18,6 +18,30 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ message: 'Token không hợp lệ hoặc hết hạn.' });
   }
 };
+export const isAdmin = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Vui lòng đăng nhập trước khi tiếp tục.' });
+  }
+
+  try {
+    const tokenValue = token.split(' ')[1];
+    const decoded = jwt.verify(tokenValue, process.env.JWT_SECRET);
+    console.log('Thông tin từ token:', decoded);
+
+    if (decoded.role !== 'admin') { // Kiểm tra nếu role của user là 'admin'
+      return res.status(403).json({ message: 'Bạn không có quyền truy cập vào trang Admin.' });
+    }
+
+    req.user = decoded; // Gán thông tin user vào request
+    next();
+  } catch (error) {
+    console.error('Token không hợp lệ hoặc hết hạn.', error);
+    return res.status(401).json({ message: 'Token không hợp lệ hoặc hết hạn.' });
+  }
+};
+
 
 // Middleware xác thực token giỏ hàng
 export const authenticateToken = (req, res, next) => {

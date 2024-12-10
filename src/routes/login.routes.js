@@ -17,16 +17,17 @@ const generateToken = (user) => {
 // Route Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
+  console.log('Password gửi từ client:', password);
   try {
     const user = await managerLoginService.authenticate(email);
-    console.log(user);
+    console.log('User sau khi xác thực:',user);
     if (user && await bcrypt.compare(password, user.password)) {
       const token = generateToken({
-        id: user.customerId,
+        id: user.id,
         email: user.email,
         role_id: user.role_id,
       });
+      console.log('userId gửi từ server: ', user.id);
       console.log("token:" , token);
       return res.status(200).json({
         token,
@@ -43,7 +44,6 @@ router.post('/login', async (req, res) => {
 // Route Đăng Xuất
 router.post('/logout', (req, res) => {
     const token = req.headers['authorization'];
-
     if (!token) {
       console.log('Không tìm thấy token trên request.');
       return res.status(401).json({ message: 'Không tìm thấy token.' });

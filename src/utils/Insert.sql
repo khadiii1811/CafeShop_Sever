@@ -9,6 +9,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 
+-----ADMIN-----
+INSERT INTO admin (email, password)
+VALUES ('admin@gmail.com', '$2b$10$pFzwowW/sl1E4TX57tCUB.A71AP6c4rf/oIHOT4PjpL0XNbva3Yfi');
 
 
 

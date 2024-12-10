@@ -8,6 +8,7 @@ import forgotPasswordRouter from './src/routes/forgot.routes.js';
 import cartRouter from './src/routes/cart.routes.js'
 import vnpayRouter from './src/routes/vnpayPayment.route.js'
 import courseRouter from './src/routes/course.routes.js'
+import adminRouter from './src/routes/admin.routes.js';
 import dotenv from 'dotenv';
 
 const app = express();
@@ -28,12 +29,13 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', loginRouter);  
-app.use('/api',registerRouter)
+app.use('/api',registerRouter);
 app.use('/api',forgotPasswordRouter);
 app.use('/api',coffeBagRouter);
-app.use('/api',courseRouter)
-app.use('/api',vnpayRouter)
+app.use('/api',courseRouter);
+app.use('/api',vnpayRouter);
 app.use('/api',cartRouter);
+app.use('/api', adminRouter);
 // Khởi động server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -57,3 +57,12 @@ CREATE TABLE lineItem (
     FOREIGN KEY (orderId) REFERENCES `order`(orderId),
     FOREIGN KEY (productId) REFERENCES product(productId)
 );
+CREATE TABLE admin (
+    adminId INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL, 
+    password VARCHAR(100) NOT NULL      
+);
+
+ALTER TABLE admin ADD COLUMN role_id VARCHAR(50) DEFAULT 'admin';
+
+ALTER TABLE customer ADD COLUMN role_id VARCHAR(50) DEFAULT 'customer';

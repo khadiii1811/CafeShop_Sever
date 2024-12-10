@@ -6,13 +6,32 @@ import bcrypt from 'bcrypt';
 // Authenticate a user during login
 async function authenticate(email) {
     try {
-        const user = await db('customer').where({ email }).first();
-        return user;
+      const adminUser = await db('admin').where({ email }).first();
+      if (adminUser) {
+        return { 
+          id: adminUser.adminId, 
+          email: adminUser.email, 
+          role_id: adminUser.role_id,
+          password: adminUser.password // Thêm mật khẩu từ database
+        };
+      }
+  
+      const customerUser = await db('customer').where({ email }).first();
+      if (customerUser) {
+        return { 
+          id: customerUser.customerId, 
+          email: customerUser.email, 
+          role_id: customerUser.role_id,
+          password: customerUser.password // Thêm mật khẩu từ database
+        };
+      }
+  
+      return null; // Không tìm thấy user hợp lệ
     } catch (error) {
-        console.error('Lỗi tìm user:', error);
-        throw new Error('Database error');
+      console.error('Lỗi tìm user:', error);
+      throw new Error('Database error');
     }
-}
+  }
 // async function authenticate(email, password) {
 //     const user = await db('customer').where({ email }).first();
 
